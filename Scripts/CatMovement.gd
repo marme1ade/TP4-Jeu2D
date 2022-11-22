@@ -4,9 +4,12 @@ export var WALK_SPEED = 300
 export var RUN_BONUS = 1.5
 export var SLIDE = 16
 
-onready var _animated_sprite = $AnimatedSprite
-var prev_animation
+var projectile_time_limiter = 0.5
+var projectile_time_remaining = 0
 
+const projectile_path = "res://Scenes/ProjectileSouris.tscn"
+
+onready var _animated_sprite = $AnimatedSprite
 
 var orientation_index = -1
 
@@ -52,3 +55,13 @@ func _physics_process(delta):
 		velocity = 0
 
 	move_and_slide(velocity * direction)
+
+	if Input.is_action_just_pressed("ui_up"):
+		shoot_projectile()
+
+func shoot_projectile():
+	#if projectile_time_remaining <= 0:
+		projectile_time_remaining = projectile_time_limiter
+		var projectile = preload(projectile_path).instance()
+		projectile.init(transform.origin, Vector2(0,-1))
+		get_parent().add_child(projectile)
