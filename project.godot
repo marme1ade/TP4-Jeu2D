@@ -11,8 +11,13 @@ config_version=4
 [application]
 
 config/name="TP4"
-run/main_scene="res://Scenes/Chat.tscn"
+run/main_scene="res://Scenes/Game.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [gui]
 
