@@ -1,15 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Background.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Chat.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/LevelManager.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/LevelManager.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/EnemiesManager.gd" type="Script" id=4]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="ParallaxBackground" parent="." instance=ExtResource( 1 )]
-speed = 5
 
 [node name="Chat" parent="." instance=ExtResource( 2 )]
 position = Vector2( 493, 527 )
 z_index = 1
+
+[node name="Enemies" type="Node2D" parent="."]
+script = ExtResource( 4 )

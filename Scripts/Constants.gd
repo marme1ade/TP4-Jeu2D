@@ -6,6 +6,7 @@ enum Enemy {
 	test,
 }
 
+var speed = 1
 var enemy_template = []
 
 func _ready():
