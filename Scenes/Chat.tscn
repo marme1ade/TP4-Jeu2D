@@ -103,13 +103,13 @@ animations = [ {
 extents = Vector2( 16.5, 18 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
+collision_mask = 4
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 3, 3 )
 frames = SubResource( 5 )
 animation = "Forward"
-frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

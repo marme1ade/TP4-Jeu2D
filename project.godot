@@ -23,9 +23,20 @@ Constants="*res://Scripts/Constants.gd"
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[global]
+
+layer=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Projectile"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Ammo"
 
 [physics]
 

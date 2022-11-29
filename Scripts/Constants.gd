@@ -1,12 +1,17 @@
 extends Node
 
-const ENEMY_PATH = ["res://Scenes/Chat.tscn"]
+const ENEMY_PATH = [
+	"res://Scenes/Enemies/Racoon.tscn",
+	"res://Scenes/Enemies/Dog1.tscn",
+	"res://Scenes/Enemies/Dog2.tscn",]
 
 enum Enemy {
-	test,
+	racoon,
+	dog1,
+	dog2,
 }
 
-var speed = 1
+var speed = 2
 var enemy_template = []
 
 func _ready():

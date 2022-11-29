@@ -1,5 +1,7 @@
 extends Node2D
 
+func _ready():
+	randomize()
 
 func _physics_process(_delta):
 	for enemy in get_children():
@@ -10,10 +12,15 @@ func _physics_process(_delta):
 
 func spawn_enemy(enemy_type):
 	var enemy_instance = Constants.enemy_template[enemy_type].instance()
-	match (enemy_type):
-		Constants.Enemy.test:
-			enemy_instance.position = Vector2(300, 50)
-			add_child(enemy_instance)
-		_: # Position de spawn par défaut (en haut de l'écran)
-			enemy_instance.position = Vector2(300, 50)
-			add_child(enemy_instance)
+
+	var rand_dir = randi() % 2
+	var rand_speed = randi() % 100
+	enemy_instance.init(rand_dir, 150 + rand_speed)
+
+	if (rand_dir == 0):
+		enemy_instance.position = Vector2(-50, 50)
+	else:
+		enemy_instance.position = Vector2(get_viewport ().get_visible_rect ().size.x +50, 50)
+
+	add_child(enemy_instance)
+
