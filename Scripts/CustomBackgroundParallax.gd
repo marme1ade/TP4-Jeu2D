@@ -2,6 +2,8 @@
 
 extends Node2D
 
+signal traveled_distance(distance)
+
 const LAYER1_OFFSCREEN_POSITION = -719
 const LAYER2_FILLSCREEN_POSITION = 478
 
@@ -23,6 +25,11 @@ func _physics_process(_delta):
 	# Effet de défilement vertical
 	_layer1.position.y += Constants.speed
 	_layer2.position.y += Constants.speed
+
+	if (Constants.trippy_mode):
+		Constants.speed += 0.5
+	else:
+		emit_signal("traveled_distance", Constants.speed / 20.0)
 
 	# Layer2 a pris la position initiale de Layer1. Layer1 prends la position initiale de layer 2 (OFFSCREEN)
 	if _active_layer == _layer1 && _layer2.position.y >= LAYER2_FILLSCREEN_POSITION:

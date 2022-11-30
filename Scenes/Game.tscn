@@ -18,6 +18,9 @@ z_index = 1
 script = ExtResource( 4 )
 
 [node name="EnemySpawnDelay" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
+[connection signal="traveled_distance" from="ParallaxBackground" to="." method="_on_ParallaxBackground_traveled_distance"]
+[connection signal="end_game" from="Chat" to="." method="_on_Chat_end_game"]
 [connection signal="timeout" from="EnemySpawnDelay" to="." method="_on_EnemySpawnDelay_timeout"]

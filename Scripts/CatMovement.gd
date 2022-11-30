@@ -1,5 +1,9 @@
 extends KinematicBody2D
 
+class_name Player
+
+signal end_game
+
 const PROJECTILE_PATH = "res://Scenes/ProjectileSouris.tscn"
 
 export var _walk_speed = 300
@@ -16,26 +20,30 @@ onready var _projectile_template = preload(PROJECTILE_PATH)
 func _physics_process(_delta):
 	var vector_direction = Vector2.ZERO
 
+	if Input.is_action_just_pressed("ui_up"):
+		_shoot_projectile()
+
+	if Input.is_action_just_pressed("ui_down"):
+		Constants.trippy_mode = true
+
+	if Constants.trippy_mode:
+		_shoot_projectile()
+
 	if Input.is_action_pressed("ui_left"):
-		_velocity = _walk_speed
 		vector_direction += Vector2(-1,0)
 	if Input.is_action_pressed("ui_right"):
-		_velocity =  _walk_speed
 		vector_direction += Vector2(1,0)
 
-	if _velocity == _walk_speed: # Le joueur se déplace
-		_direction = vector_direction.limit_length(1)
 
+	if vector_direction != Vector2.ZERO: # Le joueur se déplace
+		_direction = vector_direction.limit_length(1)
+		_velocity =  _walk_speed * (1+Constants.speed*0.15 if !Constants.trippy_mode else 2)
 		var animation
 		match (_direction):
 			Vector2(-1,0): # Gauche
-				if (_velocity == _walk_speed):
-					animation = "Left"
+				animation = "Left"
 			Vector2(1,0): # Droite
-				if (_velocity == _walk_speed):
-					animation = "Right"
-			Vector2(0,0): # Marche vers l'avant
-				animation = "Forward"
+				animation = "Right"
 			_:
 				animation = null
 		if (animation != null):
@@ -44,6 +52,7 @@ func _physics_process(_delta):
 	else: # Le joueur ne se deplace pas vers la gauche ou la droite
 		_animated_sprite.play("Forward")
 
+
 	if _velocity > 0:
 		_velocity -= _slide
 	else:
@@ -51,12 +60,13 @@ func _physics_process(_delta):
 
 	move_and_slide(_velocity * _direction)
 
-	if Input.is_action_just_pressed("ui_up"):
-		shoot_projectile()
 
-func shoot_projectile():
-	#if _projectile_time_remaining <= 0:
-		_projectile_time_remaining = _projectile_time_limiter
-		var projectile = _projectile_template.instance()
-		projectile.init(transform.origin, Vector2(0,-1))
-		get_parent().add_child(projectile)
+func hit():
+	emit_signal("end_game")
+
+
+func _shoot_projectile():
+	_projectile_time_remaining = _projectile_time_limiter
+	var projectile = _projectile_template.instance()
+	projectile.init(transform.origin, Vector2(0,-1))
+	get_parent().add_child(projectile)

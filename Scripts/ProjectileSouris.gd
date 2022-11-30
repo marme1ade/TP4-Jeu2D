@@ -13,3 +13,7 @@ func _ready():
 func init(pos, force):
 	self.transform.origin = pos
 	direction = force
+
+func _on_RigidBody2D_body_entered(enemy:Node):
+	enemy.hit()
+	queue_free()
