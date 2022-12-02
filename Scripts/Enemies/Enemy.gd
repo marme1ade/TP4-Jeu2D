@@ -1,10 +1,12 @@
 extends KinematicBody2D
 
 class_name Enemy
+
 signal enemy_died(enemy)
 
 onready var animated_sprite:AnimatedSprite
 
+var id
 var has_entered_game = false
 # Direction of enemy, 0 = right, 1 = left
 var _direction = 0
@@ -22,14 +24,16 @@ func _physics_process(_delta):
 	else:
 		direction_vector = Vector2(-1,0)
 
-	move_and_slide(direction_vector * _speed * Constants.speed)
+	move_and_slide(direction_vector * _speed * GameVariables.speed)
 
-	if !Constants.trippy_mode:
+	if !GameVariables.trippy_mode:
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
 			if (collision != null):
 				if (collision.collider is Player): # Collision avec le joueur
-					collision.collider.hit()
+					collision.collider.hit(self)
+					self.hit()
+
 		
 
 func init(direction, speed):

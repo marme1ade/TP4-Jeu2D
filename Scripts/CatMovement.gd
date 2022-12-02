@@ -2,9 +2,10 @@ extends KinematicBody2D
 
 class_name Player
 
-signal end_game
+signal player_hit(enemy_type)
 
 const PROJECTILE_PATH = "res://Scenes/ProjectileSouris.tscn"
+const PROJECTILE_COOLDOWN = 420 #ms
 
 export var _walk_speed = 300
 export var _slide = 16
@@ -13,6 +14,8 @@ var _projectile_time_limiter = 0.5
 var _projectile_time_remaining = 0
 var _velocity = 0
 var _direction = Vector2()
+var _last_enemy_hit = null
+var _cooldown_projectile = 0
 
 onready var _animated_sprite = $AnimatedSprite
 onready var _projectile_template = preload(PROJECTILE_PATH)
@@ -20,13 +23,14 @@ onready var _projectile_template = preload(PROJECTILE_PATH)
 func _physics_process(_delta):
 	var vector_direction = Vector2.ZERO
 
-	if Input.is_action_just_pressed("ui_up"):
-		_shoot_projectile()
+	if Input.is_action_just_pressed("ui_select"):
+		if _cooldown_projectile <= 0:
+			_shoot_projectile()
 
 	if Input.is_action_just_pressed("ui_down"):
-		Constants.trippy_mode = true
+		GameVariables.speed_up = !GameVariables.speed_up
 
-	if Constants.trippy_mode:
+	if GameVariables.trippy_mode:
 		_shoot_projectile()
 
 	if Input.is_action_pressed("ui_left"):
@@ -37,7 +41,7 @@ func _physics_process(_delta):
 
 	if vector_direction != Vector2.ZERO: # Le joueur se déplace
 		_direction = vector_direction.limit_length(1)
-		_velocity =  _walk_speed * (1+Constants.speed*0.15 if !Constants.trippy_mode else 2)
+		_velocity =  _walk_speed * (1+GameVariables.speed*0.15 if !GameVariables.trippy_mode else 2)
 		var animation
 		match (_direction):
 			Vector2(-1,0): # Gauche
@@ -61,8 +65,14 @@ func _physics_process(_delta):
 	move_and_slide(_velocity * _direction)
 
 
-func hit():
-	emit_signal("end_game")
+func _process(delta):
+	if _cooldown_projectile > 0: _cooldown_projectile -= delta * 1000 #ms
+
+
+func hit(enemy):
+	if (_last_enemy_hit != enemy):
+		_last_enemy_hit = enemy
+		emit_signal("player_hit", enemy.id)
 
 
 func _shoot_projectile():
@@ -70,3 +80,4 @@ func _shoot_projectile():
 	var projectile = _projectile_template.instance()
 	projectile.init(transform.origin, Vector2(0,-1))
 	get_parent().add_child(projectile)
+	_cooldown_projectile = PROJECTILE_COOLDOWN

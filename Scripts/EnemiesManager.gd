@@ -1,7 +1,6 @@
-
 extends Node2D
 
-signal enemy_died(enemy)
+signal player_bonus(bonus, qty)
 
 var _viewport
 
@@ -13,7 +12,7 @@ func _physics_process(_delta):
 	for enemy in get_children():
 		if !(enemy is Enemy): continue
 
-		enemy.position.y += Constants.speed
+		enemy.position.y += GameVariables.speed
 		var enemy_global_position = enemy.get_global_transform_with_canvas().origin
 
 		# L'ennemi n'est pas l'espace de jeu
@@ -42,7 +41,7 @@ func spawn_enemy(enemy_type):
 func _enemy_speed()->int:
 	var base_speed = 75
 
-	match (Constants.speed):
+	match (GameVariables.speed):
 		2:
 			base_speed = 80
 		3:
@@ -53,6 +52,9 @@ func _enemy_speed()->int:
 	return base_speed + randi() % int(0.40*base_speed)
 
 func _on_Enemy_died(enemy):
+	if enemy.id == Constants.Enemy.dog2:
+		emit_signal("player_bonus", Constants.Bonus.live, 1)
+
 	var explosion = Constants.EXPLOSION.instance()
 	explosion.position = enemy.position
 	enemy.queue_free()

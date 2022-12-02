@@ -1,9 +1,15 @@
 extends Node
 
-const ENEMY_PATH = [
+const ENEMY_PATHS = [
 	"res://Scenes/Enemies/Racoon.tscn",
 	"res://Scenes/Enemies/Dog1.tscn",
 	"res://Scenes/Enemies/Dog2.tscn",]
+
+const LEVEL_PATHS = [
+	"res://Scenes/Level1.tscn",
+]
+
+const MAX_LEVEL = len(LEVEL_PATHS)
 
 const EXPLOSION = preload("res://Scenes/Explosion.tscn")
 
@@ -13,11 +19,16 @@ enum Enemy {
 	dog2,
 }
 
-var speed = 1
+enum Bonus {
+	live,
+}
+
 var enemy_template = []
-var trippy_mode = false
-var speed_up = false
+var levels = []
 
 func _ready():
-	for path in ENEMY_PATH:
+	for path in ENEMY_PATHS:
 		enemy_template.append(load(path))
+	
+	for path in LEVEL_PATHS:
+		levels.append(load(path))

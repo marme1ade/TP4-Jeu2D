@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://Scripts/EnemyMovement.gd"
+"path": "res://Scripts/Enemies/Enemy.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -27,12 +27,13 @@ _global_script_class_icons={
 [application]
 
 config/name="TP4"
-run/main_scene="res://Scenes/Game.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Constants="*res://Scripts/Constants.gd"
+GameVariables="*res://Scripts/GameVariables.gd"
 
 [display]
 
