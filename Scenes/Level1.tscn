@@ -23,5 +23,6 @@ autostart = true
 
 [connection signal="traveled_distance" from="ParallaxBackground" to="." method="_on_ParallaxBackground_traveled_distance"]
 [connection signal="player_hit" from="Chat" to="." method="_on_Chat_player_hit"]
+[connection signal="enemy_killed" from="Enemies" to="." method="_on_Enemies_enemy_killed"]
 [connection signal="player_bonus" from="Enemies" to="." method="_on_Enemies_player_bonus"]
 [connection signal="timeout" from="EnemySpawnDelay" to="." method="_on_EnemySpawnDelay_timeout"]

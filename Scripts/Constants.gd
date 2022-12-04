@@ -5,7 +5,7 @@ const ENEMY_PATHS = [
 	"res://Scenes/Enemies/Dog1.tscn",
 	"res://Scenes/Enemies/Dog2.tscn",]
 
-const LEVEL_PATHS = [
+const LEVEL_PATHS = [ # TODO Ajouter un deuxieme niveau
 	"res://Scenes/Level1.tscn",
 ]
 

@@ -2,9 +2,11 @@ extends Node2D
 
 signal player_hit(enemy_type)
 signal player_bonus(bonus, qty)
+signal next_level
+signal enemy_killed
 
 var _traveled_distance = 0
-var _game_has_ended = false
+var _level_has_ended = false
 
 onready var _enemies_manager = $Enemies;
 
@@ -28,8 +30,11 @@ func _speed_up():
 	if _traveled_distance >= required_distance || GameVariables.speed_up: # speed up
 		GameVariables.speed_up = false
 		if (GameVariables.speed + 1 == 6): # Fin du niveau
-			# TODO
-			pass
+			$EnemySpawnDelay.stop()
+			yield(get_tree().create_timer(4.0), "timeout")
+			end_level()
+			yield(get_tree().create_timer(3.0), "timeout")
+			emit_signal("next_level")
 		else:
 			GameVariables.speed += 1
 			print("Speed ",GameVariables.speed)
@@ -50,7 +55,7 @@ func _on_EnemySpawnDelay_timeout():
 
 
 func _on_ParallaxBackground_traveled_distance(distance):
-	if !_game_has_ended:
+	if !_level_has_ended:
 		_traveled_distance += distance
 		_speed_up()
 
@@ -61,14 +66,20 @@ func _on_Chat_player_hit(enemy_type):
 
 
 func end_level():
-	GameVariables.speed = 0
-	$EnemySpawnDelay.stop()
-	var explosion = Constants.EXPLOSION.instance()
-	explosion.position = $Chat.position
-	add_child(explosion)
-	$Chat.queue_free()
-	_game_has_ended = true
+	if !_level_has_ended:
+		GameVariables.speed = 0
+		$EnemySpawnDelay.stop()
+		var explosion = Constants.EXPLOSION.instance()
+		explosion.position = $Chat.position
+		add_child(explosion)
+		$Chat.queue_free()
+		_level_has_ended = true
 
 
 func _on_Enemies_player_bonus(bonus, qty):
 	emit_signal("player_bonus", bonus, qty)
+
+
+func _on_Enemies_enemy_killed():
+	if !_level_has_ended:
+		emit_signal("enemy_killed")

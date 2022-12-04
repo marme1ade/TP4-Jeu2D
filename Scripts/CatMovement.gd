@@ -10,8 +10,6 @@ const PROJECTILE_COOLDOWN = 420 #ms
 export var _walk_speed = 300
 export var _slide = 16
 
-var _projectile_time_limiter = 0.5
-var _projectile_time_remaining = 0
 var _velocity = 0
 var _direction = Vector2()
 var _last_enemy_hit = null
@@ -76,7 +74,6 @@ func hit(enemy):
 
 
 func _shoot_projectile():
-	_projectile_time_remaining = _projectile_time_limiter
 	var projectile = _projectile_template.instance()
 	projectile.init(transform.origin, Vector2(0,-1))
 	get_parent().add_child(projectile)
