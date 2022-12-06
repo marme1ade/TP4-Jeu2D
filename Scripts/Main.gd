@@ -3,7 +3,7 @@ extends Node2D
 var _lives = 3
 var _current_level = 0
 var _level_instance = null
-var _score = 0 # TODO Afficher le score à l'écran
+var _score = 0
 var _game_has_ended = false
 
 func _ready():
@@ -21,6 +21,7 @@ func _load_level(level = 0):
 		new_level.connect("enemy_killed", self, "_on_Enemy_killed")
 
 		add_child(new_level)
+		GameVariables.speed = 1
 		if _level_instance != null:
 			_level_instance.queue_free()
 		_level_instance = new_level
@@ -39,20 +40,15 @@ func _update_lives(ajustement):
 
 	if _lives == 0:
 		_level_instance.end_level()
-		_end_game(true)
+		_end_game()
 
-# TODO
-# Afficher un menu qui donne 3 options et qui affiche le score final : 
-# - Rejouer le niveau (si show_restart_level_button) -> _load_level(_current_level)
-# - Recommencer le jeu, -> _load_level()
-# - Quitter le jeu -> get_tree().quit()
-func _end_game(show_restart_level_button = false):
+func _end_game():
 	_game_has_ended = true
-	print("Score: ", _score)
+	_pop_menu()
 
 func _reset_game_stats():
 	_update_lives(3)
-	_score = 0
+	_update_score(0)
 	_game_has_ended = false
 
 
@@ -71,7 +67,13 @@ func _on_Next_level():
 	_load_next_level()
 
 func _on_Enemy_killed():
-	_score += 1
+	_update_score(_score + 1)
 	
+func _update_score(newScore):
+	_score = newScore
+	$CanvasLayer/Score.text = str(_score)
 
-
+func _pop_menu():
+	var menu = Constants.MENU_PATH.instance()
+	menu.init(_score)
+	add_child(menu)

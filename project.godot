@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="TP4"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Scenes/Menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -37,12 +37,14 @@ GameVariables="*res://Scripts/GameVariables.gd"
 
 [display]
 
+window/size/fullscreen=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
 [global]
 
 layer=false
+scene=false
 
 [gui]
 

@@ -37,7 +37,6 @@ func _speed_up():
 			emit_signal("next_level")
 		else:
 			GameVariables.speed += 1
-			print("Speed ",GameVariables.speed)
 			$EnemySpawnDelay.wait_time = 2.0 / GameVariables.speed
 			
 
@@ -58,8 +57,6 @@ func _on_ParallaxBackground_traveled_distance(distance):
 	if !_level_has_ended:
 		_traveled_distance += distance
 		_speed_up()
-
-
 
 func _on_Chat_player_hit(enemy_type):
 	emit_signal("player_hit", enemy_type)
