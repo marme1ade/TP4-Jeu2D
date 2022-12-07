@@ -25,12 +25,6 @@ func _physics_process(_delta):
 		if _cooldown_projectile <= 0:
 			_shoot_projectile()
 
-	if Input.is_action_just_pressed("ui_down"):
-		GameVariables.speed_up = !GameVariables.speed_up
-
-	if GameVariables.trippy_mode:
-		_shoot_projectile()
-
 	if Input.is_action_pressed("ui_left"):
 		vector_direction += Vector2(-1,0)
 	if Input.is_action_pressed("ui_right"):
